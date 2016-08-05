@@ -1,0 +1,96 @@
+buildscript {
+    repositories {
+        mavenCentral()
+		mavenLocal()
+        jcenter()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    }
+}
+
+
+repositories {
+    maven {
+        name 'DVS1 Maven FS'
+        url 'http://dvs1.progwml6.com/files/maven'
+    }
+    maven {
+        name "ProfMobius Maven FS"
+        url "http://mobiusstrip.eu/maven"
+    }
+    maven {
+        name 'forge'
+        url 'http://files.minecraftforge.net/maven'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+//apply plugin: 'forge'
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+group= "triangulum"
+archivesBaseName = "Foodstuffs"
+
+// External properties
+ext.configFile = file "build.properties"
+configFile.withReader {
+    // Load config.  It shall from now be referenced as simply config or project.config
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
+configurations {
+    deployerJars
+}
+
+minecraft {
+    version = config.minecraft_version + "-" + config.forge_version
+    mappings = config.mappings
+    runDir = "run"
+    useDepAts = true
+}
+
+dependencies {
+    deobfCompile "slimeknights.mantle:Mantle:${config.minecraft_version}-${config.mantle_version}"
+    deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
+    deobfCompile "mcp.mobius.waila:Waila:${config.waila_version}_1.9.4"
+    deployerJars 'org.apache.maven.wagon:wagon-ssh:2.2'
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'resources'
+        }
+    }
+}
+
+processResources
+{
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "MCversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'MCversion':project.minecraft.version
+    }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}

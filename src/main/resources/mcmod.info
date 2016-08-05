@@ -1,0 +1,15 @@
+[
+{
+  "modid": "foodstuffs",
+  "name": "Food Stuffs",
+  "description": "A feature-mod that overhauls plant and animal farming game mechanisms and the hunger system to give a more in-depth player experience.",
+  "version": "TEST",
+  "mcversion": "1.10.2",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Sylla-Bus","Exo594"],
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
