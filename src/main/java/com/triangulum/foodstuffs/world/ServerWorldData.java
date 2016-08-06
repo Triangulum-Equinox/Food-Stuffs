@@ -5,25 +5,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-import com.triangulum.foodstuffs.plants.Crop;
-import com.triangulum.foodstuffs.plants.CropComparator;
+import com.triangulum.foodstuffs.crops.Crop;
+import com.triangulum.foodstuffs.crops.CropComparator;
+import com.triangulum.foodstuffs.crops.ServerCrop;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class WorldData
+public class ServerWorldData implements IWorldData
 {
     
     private World world;
     
     private int worldTotalTicks;
     
-    private Map<BlockPos, Crop> cropMap;
-    private PriorityQueue<Crop> cropGrowthQueue;
+    private Map<BlockPos, ServerCrop> cropMap;
+    private PriorityQueue<ServerCrop> cropGrowthQueue;
     
-    public WorldData(World worldIn)
+    public ServerWorldData(World worldIn)
     {
         world = worldIn;
     }
@@ -34,7 +35,7 @@ public class WorldData
         
         while(cropGrowthQueue.peek().getEndWorldTick() - worldTotalTicks <= 0)
         {
-            Crop plant = cropGrowthQueue.poll();
+            ServerCrop plant = cropGrowthQueue.poll();
             
             plant.nextGrowthStage();
             
@@ -42,13 +43,26 @@ public class WorldData
         }
     }
     
-    public void addCrop(Crop plant)
+    public void addCrop(Crop crop)
     {
-        cropMap.put(plant.getBlockPos(), plant);
-        cropGrowthQueue.offer(plant);
+        ServerCrop serverCrop = (ServerCrop) crop;
+        
+        cropMap.put(serverCrop.getBlockPos(), serverCrop);
+        cropGrowthQueue.offer(serverCrop);
     }
     
-    public Crop getPlant(BlockPos pos)
+    public void removeCrop(BlockPos pos)
+    {
+        Crop crop = cropMap.get(pos);
+        
+        if(crop == null)
+            return;
+        
+        cropGrowthQueue.remove(crop);
+        cropMap.remove(pos);
+    }
+    
+    public Crop getCrop(BlockPos pos)
     {
         return cropMap.get(pos);
     }
@@ -59,14 +73,14 @@ public class WorldData
         
         CropComparator comparator = new CropComparator();
         
-        cropMap = new HashMap<BlockPos, Crop>();
-        cropGrowthQueue = new PriorityQueue<Crop>(comparator);
+        cropMap = new HashMap<BlockPos, ServerCrop>();
+        cropGrowthQueue = new PriorityQueue<ServerCrop>(comparator);
         
         NBTTagList plants = worldData.getTagList("plants", 10);
         for(int i = 0; i < plants.tagCount(); i++)
         {
             NBTTagCompound plantData = plants.getCompoundTagAt(i);
-            Crop plant = new Crop(world, this);
+            ServerCrop plant = new ServerCrop(world, this);
             
             plant.load(plantData);
             
@@ -77,6 +91,16 @@ public class WorldData
     public void save(NBTTagCompound worldData)
     {
         worldData.setInteger("worldTotalTicks", worldTotalTicks);
+        
+        NBTTagList plants = new NBTTagList();
+        for(BlockPos cropPos : cropMap.keySet())
+        {
+            NBTTagCompound plantData = new NBTTagCompound();
+            Crop crop = cropMap.get(cropPos);
+            
+            crop.save(plantData);
+            plants.appendTag(plantData);
+        }
     }
 
 }

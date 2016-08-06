@@ -1,11 +1,12 @@
 package com.triangulum.foodstuffs.block;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+import com.triangulum.foodstuffs.crops.Crop;
+import com.triangulum.foodstuffs.crops.ServerCrop;
 import com.triangulum.foodstuffs.handler.WorldHandler;
-import com.triangulum.foodstuffs.plants.Crop;
-import com.triangulum.foodstuffs.world.WorldData;
+import com.triangulum.foodstuffs.world.IWorldData;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -15,7 +16,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -47,12 +47,12 @@ public class BlockCrop extends Block
         if(worldIn.isRemote)
             return;
 
-        WorldData worldData = WorldHandler.getWorldData(worldIn);
+        IWorldData worldData = WorldHandler.getWorldData(worldIn);
 
         if(worldData == null)
             return;
 
-        Crop crop = new Crop(worldIn, worldData, pos);
+        Crop crop = new ServerCrop(worldIn, worldData, pos);
         
         crop.loadFromStack(stack);
         worldData.addCrop(crop);
@@ -72,22 +72,34 @@ public class BlockCrop extends Block
         }
     }
     
+    @Override
+    public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn)
+    {
+        if(worldIn.isRemote)
+            return;
+    }
+    
+    @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn)
+    {
+        if(worldIn.isRemote)
+            return;
+    }
+    
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if(worldIn.isRemote)
+            return;
+        
+        IWorldData worldData = WorldHandler.getWorldData(worldIn);
+        
+        worldData.removeCrop(pos);
+    }
+    
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        List<ItemStack> ret = new java.util.ArrayList<ItemStack>();
-
-        if(world instanceof World)
-        {
-            World worldIn = (World) world;
-            WorldData worldData = WorldHandler.getWorldData(worldIn);
-            Crop crop = worldData.getPlant(pos);
-            ItemStack cropItem = crop.getDroppedItemStack();
-            
-            if(cropItem != null)
-                ret.add(cropItem);
-        }
-        
-        return ret;
+        return new ArrayList<ItemStack>();
     }
 
 }

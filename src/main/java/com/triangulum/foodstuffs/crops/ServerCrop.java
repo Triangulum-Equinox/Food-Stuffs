@@ -1,7 +1,7 @@
-package com.triangulum.foodstuffs.plants;
+package com.triangulum.foodstuffs.crops;
 
-import com.triangulum.foodstuffs.block.BlockCrop;
-import com.triangulum.foodstuffs.world.WorldData;
+import com.triangulum.foodstuffs.world.IWorldData;
+import com.triangulum.foodstuffs.world.ServerWorldData;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -9,39 +9,31 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class Crop
+public class ServerCrop extends Crop
 {
-    private World world;
-    private WorldData worldData;
-    private BlockPos blockPos;
     
     private int endWorldTick;
-    
-    private byte crop;
     
     private int growthStat;
     private int yieldStat;
     //might use this, could add multiple variables for different resistances, speculation for now though
     //private int resistanceStat;
     
-    public Crop(World worldIn, WorldData data)
+    public ServerCrop(World worldIn, IWorldData data)
     {
-        world = worldIn;
-        worldData = data;
+        super(worldIn, data);
     }
     
-    public Crop(World worldIn, WorldData data, BlockPos pos)
+    public ServerCrop(World worldIn, IWorldData worldData, BlockPos pos)
     {
-        this(worldIn, data);
-        blockPos = pos;
+        super(worldIn, worldData, pos);
     }
 
     public void nextGrowthStage()
     {
         IBlockState state = world.getBlockState(blockPos);
-        int age = state.getValue(BlockCrop.getAgeProperty()).intValue();
         
-        world.setBlockState(blockPos, state.getBlock().getDefaultState().withProperty(BlockCrop.getAgeProperty(), age + 1));
+        world.markBlockRangeForRenderUpdate(blockPos, blockPos);
     }
     
     public ItemStack getDroppedItemStack()
@@ -58,33 +50,23 @@ public class Crop
     
     public void loadFromStack(ItemStack itemstack)
     {
-        crop = (byte) itemstack.getMetadata();
+        super.loadFromStack(itemstack);
         
         loadPlantData(itemstack.getTagCompound());
     }
     
     public void load(NBTTagCompound plantData)
     {
-        int xCoord = plantData.getInteger("xCoord");
-        int yCoord = plantData.getInteger("yCoord");
-        int zCoord = plantData.getInteger("zCoord");
-        
-        blockPos = new BlockPos(xCoord, yCoord, zCoord);
+        super.load(plantData);
         
         endWorldTick = plantData.getInteger("endWorldTick");
-        
-        crop = plantData.getByte("crop");
         
         loadPlantData(plantData);
     }
     
     public void save(NBTTagCompound plantData)
     {
-        plantData.setInteger("xCoord", blockPos.getX());
-        plantData.setInteger("yCoord", blockPos.getY());
-        plantData.setInteger("zCoord", blockPos.getZ());
-        
-        plantData.setByte("crop", crop);
+        super.load(plantData);
         
         plantData.setInteger("endWorldTick", endWorldTick);
         
