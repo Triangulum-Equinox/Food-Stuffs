@@ -1,4 +1,4 @@
-package com.triangulum.foodstuffs.util;
+package com.triangulum.foodstuffs.entity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;

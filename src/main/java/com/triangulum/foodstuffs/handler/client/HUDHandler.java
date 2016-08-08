@@ -1,6 +1,6 @@
 package com.triangulum.foodstuffs.handler.client;
 
-import com.triangulum.foodstuffs.util.ModFoodStats;
+import com.triangulum.foodstuffs.entity.ModFoodStats;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

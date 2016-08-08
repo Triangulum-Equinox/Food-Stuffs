@@ -1,30 +1,30 @@
-package com.triangulum.foodstuffs.crops;
+package com.triangulum.foodstuffs.world;
 
-import com.triangulum.foodstuffs.world.IWorldData;
-
+import codechicken.lib.world.WorldExtension;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class Crop
+public abstract class AbstractCrop
 {
+    
     protected World world;
-    protected IWorldData worldData;
+    protected WorldExtension worldExt;
     protected BlockPos blockPos;
     
     protected byte crop;
     protected byte cropStage;
     
-    public Crop(World worldIn, IWorldData data)
+    public AbstractCrop(World worldIn, WorldExtension ext)
     {
         world = worldIn;
-        worldData = data;
+        worldExt = ext;
     }
     
-    public Crop(World worldIn, IWorldData worldData, BlockPos pos)
+    public AbstractCrop(World worldIn, WorldExtension ext, BlockPos pos)
     {
-        this(worldIn, worldData);
+        this(worldIn, ext);
         blockPos = pos;
     }
     
@@ -61,14 +61,24 @@ public abstract class Crop
         return world;
     }
     
-    public IWorldData getWorldData()
+    public WorldExtension getWorldData()
     {
-        return worldData;
+        return worldExt;
     }
     
     public BlockPos getBlockPos()
     {
         return blockPos;
+    }
+    
+    public byte getCrop()
+    {
+        return crop;
+    }
+    
+    public byte getCropStage()
+    {
+        return cropStage;
     }
 
 }

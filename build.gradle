@@ -31,6 +31,14 @@ repositories {
         name 'forge'
         url 'http://files.minecraftforge.net/maven'
     }
+	maven {
+		name 'llibrary'
+        url "http://maven.ilexiconn.net/"
+    }
+	maven {
+		name 'CodeChicken'
+		url "http://chickenbones.net/maven"
+	}
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -61,9 +69,13 @@ minecraft {
 }
 
 dependencies {
-    deobfCompile "slimeknights.mantle:Mantle:${config.minecraft_version}-${config.mantle_version}"
     deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
     deobfCompile "mcp.mobius.waila:Waila:${config.waila_version}_1.9.4"
+	deobfCompile "net.ilexiconn:llibrary:${config.llibrary_version}-${config.minecraft_version}"
+	
+	compile "codechicken:CodeChickenLib:${config.minecraft_version}-${config.ccl_version}:deobf"
+    compile "codechicken:CodeChickenCore:${config.minecraft_version}-${config.ccc_version}:deobf"
+	
     deployerJars 'org.apache.maven.wagon:wagon-ssh:2.2'
 }
 

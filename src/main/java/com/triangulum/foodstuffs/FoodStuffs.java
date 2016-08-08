@@ -5,7 +5,6 @@ import com.triangulum.foodstuffs.handler.client.GuiHandler;
 import com.triangulum.foodstuffs.init.Entities;
 import com.triangulum.foodstuffs.init.ModBlocks;
 import com.triangulum.foodstuffs.init.ModItems;
-import com.triangulum.foodstuffs.init.Network;
 import com.triangulum.foodstuffs.init.Recipes;
 import com.triangulum.foodstuffs.world.ModWorldGenerator;
 
@@ -37,9 +36,6 @@ public class FoodStuffs
     {
     	//load our config
         ConfigurationHandler.loadConfig(event.getSuggestedConfigurationFile());
-
-        //register any packets we need
-        Network.register();
 
         //register any items we need
         ModItems.register();

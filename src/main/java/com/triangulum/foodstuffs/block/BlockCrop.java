@@ -3,10 +3,9 @@ package com.triangulum.foodstuffs.block;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.triangulum.foodstuffs.crops.Crop;
-import com.triangulum.foodstuffs.crops.ServerCrop;
-import com.triangulum.foodstuffs.handler.WorldHandler;
-import com.triangulum.foodstuffs.world.IWorldData;
+import com.triangulum.foodstuffs.Common;
+import com.triangulum.foodstuffs.world.Crop;
+import com.triangulum.foodstuffs.world.WorldExt;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -44,18 +43,15 @@ public class BlockCrop extends Block
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        if(worldIn.isRemote)
+        WorldExt worldExt = Common.getWorldExtension(worldIn);
+        
+        if(worldExt == null)
             return;
 
-        IWorldData worldData = WorldHandler.getWorldData(worldIn);
-
-        if(worldData == null)
-            return;
-
-        Crop crop = new ServerCrop(worldIn, worldData, pos);
+        Crop crop = new Crop(worldExt, pos);
         
         crop.loadFromStack(stack);
-        worldData.addCrop(crop);
+        worldExt.addCrop(crop);
 
         int seedCount = stack.getTagCompound().getInteger("seedCount");
 
@@ -89,12 +85,12 @@ public class BlockCrop extends Block
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        if(worldIn.isRemote)
+        WorldExt worldExt = Common.getWorldExtension(worldIn);
+        
+        if(worldExt == null)
             return;
         
-        IWorldData worldData = WorldHandler.getWorldData(worldIn);
-        
-        worldData.removeCrop(pos);
+        worldExt.removeCrop(pos);
     }
     
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)

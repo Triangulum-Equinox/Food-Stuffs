@@ -1,4 +1,4 @@
-package com.triangulum.foodstuffs.crops;
+package com.triangulum.foodstuffs.world.crops;
 
 import com.triangulum.foodstuffs.api.ICrop;
 

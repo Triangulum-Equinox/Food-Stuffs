@@ -2,7 +2,7 @@ package com.triangulum.foodstuffs.handler;
 
 import java.lang.reflect.Field;
 
-import com.triangulum.foodstuffs.util.ModFoodStats;
+import com.triangulum.foodstuffs.entity.ModFoodStats;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;

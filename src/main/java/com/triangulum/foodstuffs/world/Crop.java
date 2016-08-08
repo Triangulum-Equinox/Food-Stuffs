@@ -1,17 +1,13 @@
-package com.triangulum.foodstuffs.crops;
-
-import com.triangulum.foodstuffs.world.IWorldData;
-import com.triangulum.foodstuffs.world.ServerWorldData;
+package com.triangulum.foodstuffs.world;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
-public class ServerCrop extends Crop
+public class Crop extends AbstractCrop
 {
-    
+
     private int endWorldTick;
     
     private int growthStat;
@@ -19,14 +15,14 @@ public class ServerCrop extends Crop
     //might use this, could add multiple variables for different resistances, speculation for now though
     //private int resistanceStat;
     
-    public ServerCrop(World worldIn, IWorldData data)
+    public Crop(WorldExt worldExt)
     {
-        super(worldIn, data);
+        super(worldExt.world, worldExt);
     }
     
-    public ServerCrop(World worldIn, IWorldData worldData, BlockPos pos)
+    public Crop(WorldExt worldExt, BlockPos pos)
     {
-        super(worldIn, worldData, pos);
+        super(worldExt.world, worldExt, pos);
     }
 
     public void nextGrowthStage()
