@@ -18,7 +18,7 @@ public class RenderCattle<T extends EntityCattle> extends RenderLiving<T>
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(T entity)
+    protected ResourceLocation getEntityTexture(EntityCattle entity)
     {
         return COW_TEXTURES;
     }

@@ -22,8 +22,8 @@ public class Client extends Common
 		
 		ModItems.registerClient();
 		ModBlocks.registerClient();
-		
-		PacketCustom.assignHandler(FoodStuffs.MOD_ID, new ClientPacketHandler());
+	      
+        PacketCustom.assignHandler(FoodStuffs.MOD_ID, new ClientPacketHandler());
 	}
 	
 	public static ClientWorldExt getClientWorldExtension(World world)

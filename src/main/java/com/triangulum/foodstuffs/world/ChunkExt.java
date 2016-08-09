@@ -35,6 +35,7 @@ public class ChunkExt extends ChunkExtension
             Crop crop = cropGrowthQueue.poll();
             
             crop.nextGrowthStage();
+            ServerPacketHandler.sendCropWatchPacket(crop);
             cropGrowthQueue.offer(crop);
         }
     }

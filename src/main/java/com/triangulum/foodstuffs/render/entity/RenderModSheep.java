@@ -19,7 +19,7 @@ public class RenderModSheep<T extends EntityModSheep> extends RenderLiving<T>
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(T entity)
+    protected ResourceLocation getEntityTexture(EntityModSheep entity)
     {
         return SHEARED_SHEEP_TEXTURES;
     }

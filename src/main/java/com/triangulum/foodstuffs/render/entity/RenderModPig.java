@@ -18,7 +18,7 @@ public class RenderModPig<T extends EntityModPig> extends RenderLiving<T>
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(T entity)
+    protected ResourceLocation getEntityTexture(EntityModPig entity)
     {
         return PIG_TEXTURES;
     }

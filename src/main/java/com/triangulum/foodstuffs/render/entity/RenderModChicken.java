@@ -20,7 +20,7 @@ public class RenderModChicken<T extends EntityModChicken> extends RenderLiving<T
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(T entity)
+    protected ResourceLocation getEntityTexture(EntityModChicken entity)
     {
         return CHICKEN_TEXTURES;
     }

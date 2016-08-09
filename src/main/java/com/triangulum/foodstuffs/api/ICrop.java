@@ -4,5 +4,6 @@ public interface ICrop
 {
 
     public String getName();
+    public ICropRender getCropRender();
     
 }
