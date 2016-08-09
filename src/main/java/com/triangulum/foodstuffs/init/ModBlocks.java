@@ -5,9 +5,12 @@ import com.triangulum.foodstuffs.block.BlockModGrass;
 import com.triangulum.foodstuffs.block.BlockModTallGrass;
 import com.triangulum.foodstuffs.entity.EntityModAnimal;
 import com.triangulum.foodstuffs.util.Hacker;
+import net.minecraft.block.Block;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ModBlocks 
 {
@@ -39,5 +42,12 @@ public class ModBlocks
     public static void registerClient()
     {
         
+    }
+    
+    public static void comboRegister(Block block){
+        GameRegistry.register(block);
+        ItemBlock itemBlock = new ItemBlock(block);
+        itemBlock.setRegistryName(block.getRegistryName());
+        GameRegistry.register(itemBlock);
     }
 }
